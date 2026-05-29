@@ -1,0 +1,11 @@
+# Exclude administrative and VCS files from being uploaded to Google Cloud Build
+.gcloudignore
+.git
+.gitignore
+.github/
+
+# Exclude unnecessary helper scripts and text dumps
+dump_exif.py
+exif_dump.txt
+migrate.ps1
+gallery.html

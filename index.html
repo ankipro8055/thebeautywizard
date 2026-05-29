@@ -73,8 +73,8 @@
       }
     ],
     "sameAs": [
-      "https://www.facebook.com/urbanlooksalonpatna",
-      "https://www.instagram.com/urbanlooksalonpatna"
+      "https://www.facebook.com/thebeautywizardsalonpatna",
+      "https://www.instagram.com/thebeautywizardsalonpatna"
     ]
   }
   </script>
@@ -132,8 +132,8 @@
               <a href="tel:+917644005816">
                 <i class="fa-solid fa-phone"></i> +91 76440 05816
               </a>
-              <a href="mailto:contact@thebeautywizardsalonpatna.com">
-                <i class="fa-solid fa-envelope"></i> contact@thebeautywizardsalonpatna.com
+              <a href="mailto:thebeautywizardsalom@gmail.com">
+                <i class="fa-solid fa-envelope"></i> thebeautywizardsalom@gmail.com
               </a>
               <div class="mobile-menu-hours">
                 <i class="fa-solid fa-clock"></i>
@@ -201,7 +201,7 @@
         <!-- Hero Luxury Portrait Visual Created via generated picturesque assets -->
         <div class="hero-card">
           <div class="hero-img-wrapper">
-            <img class="hero-picturesque-img" src="assets/IMG_0534.JPG" alt="The Beauty wizard salon Premium Salon Interior showing luxury styling mirrors and warm gold glow">
+            <img class="hero-picturesque-img" src="assets/hero_salon_interior.png" alt="The Beauty wizard salon Premium Salon Interior showing luxury styling mirrors and warm gold glow">
             <div class="hero-overlay-info">
               <span class="hero-overlay-tag">Luxury Styling Space</span>
               <h3 class="hero-overlay-name">Saguna Sanctuary</h3>
@@ -488,7 +488,7 @@
 
         <!-- Quiz Side Picturesque (Dynamic glow facial) -->
         <div class="quiz-picturesque-wrapper">
-          <img class="quiz-picturesque-img" src="assets/IMG_0512.JPG" alt="Client enjoying a glowing golden skincare face cream treatment with soft ambient lighting">
+          <img class="quiz-picturesque-img" src="assets/glow_quiz_facial.png" alt="Client enjoying a glowing golden skincare face cream treatment with soft ambient lighting">
         </div>
       </div>
     </div>
@@ -924,7 +924,12 @@
             <h3>Spell Cast Successfully!</h3>
             <p>Your appointment details have been compiled. We are opening WhatsApp to send your booking directly to 7250794627!</p>
             <p style="font-size: 0.9rem; color: var(--botanical-green);">Thank you for choosing The Beauty wizard salon.</p>
-            <button class="btn-premium btn-premium-primary" id="successOkBtn">Weave Another Spell</button>
+            <div style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem; align-items: center; width: 100%;">
+              <a href="#" class="btn-premium btn-premium-secondary" id="successEmailBtn" style="width: 100%; display: none; text-decoration: none; justify-content: center; align-items: center;">
+                <i class="fa-solid fa-envelope" style="margin-right: 0.5rem;"></i> Send Copy via Email
+              </a>
+              <button class="btn-premium btn-premium-primary" id="successOkBtn" style="width: 100%; margin: 0;">Weave Another Spell</button>
+            </div>
           </div>
         </div>
 
@@ -1100,6 +1105,22 @@
             </a>
           </div>
         </div>
+
+        <!-- Landmark Router Box -->
+        <div class="landmark-router">
+          <label for="landmarkSelector"><i class="fa-solid fa-route" style="color: var(--primary-pink); margin-right: 0.5rem;"></i>Select a Neighborhood Landmark</label>
+          <select id="landmarkSelector" class="landmark-select">
+            <option value="" disabled selected>Choose a neighborhood...</option>
+            <option value="danapur-station">Danapur Railway Station (2.8 km away)</option>
+            <option value="bailey-road">RPS More / Gola Road (3.5 km away)</option>
+            <option value="patliputra">Patliputra Colony / Ashiana Nagar (9.8 km away)</option>
+            <option value="boring-road">Boring Road Crossing (11.5 km away)</option>
+            <option value="patna-junction">Patna Junction Railway Station (13.2 km away)</option>
+          </select>
+          <div id="landmarkResult" class="landmark-result">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
       </div>
 
       <!-- Real Map Displays (Both Google Maps Embed & Stylized vector Indicator) -->
@@ -1169,9 +1190,9 @@
             </a>
           </li>
           <li>
-            <a href="mailto:contact@thebeautywizardsalonpatna.com">
+            <a href="mailto:thebeautywizardsalom@gmail.com">
               <i class="fa-solid fa-envelope contact-icon"></i>
-              <span>contact@thebeautywizardsalonpatna.com</span>
+              <span>thebeautywizardsalom@gmail.com</span>
             </a>
           </li>
           <li>

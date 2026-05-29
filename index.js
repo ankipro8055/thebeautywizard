@@ -1,6 +1,6 @@
 /* 
   =========================================
-  URBAN LOOK SALON & SPA
+  THE BEAUTY WIZARD SALON & SPA
   Premium Interactive Application Engine
   =========================================
 */
@@ -1197,6 +1197,21 @@ ${notes ? `- *Special Notes:* ${notes}` : ""}`;
 
       const whatsappUrl = `https://wa.me/917250794627?text=${encodeURIComponent(text)}`;
 
+      // Format Email message
+      const emailSubject = `New Appointment Booking - ${name}`;
+      const emailBody = `Hello The Beauty Wizard Salon,
+
+I would like to book an appointment with the following details:
+- Name: ${name}
+- Phone: ${phone}
+- Service: ${serviceText}
+- Stylist: ${stylistText}
+- Date: ${date}
+- Time: ${time}
+${notes ? `- Special Notes: ${notes}` : ""}`;
+
+      const mailtoUrl = `mailto:thebeautywizardsalom@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+
       // Trigger sparkle/glow explosion at the submit button location
       const submitBtn = document.getElementById("bookingSubmitBtn");
       const btnRect = submitBtn.getBoundingClientRect();
@@ -1213,9 +1228,18 @@ ${notes ? `- *Special Notes:* ${notes}` : ""}`;
       // Transition to Success Overlay with fade-in delay
       setTimeout(() => {
         bookingSuccessOverlay.style.display = "flex";
-        // Automatically redirect to WhatsApp in a new tab
+        
+        // Setup success overlay email link in case they want to resend
+        const successEmailBtn = document.getElementById("successEmailBtn");
+        if (successEmailBtn) {
+          successEmailBtn.setAttribute("href", mailtoUrl);
+          successEmailBtn.style.display = "inline-flex";
+        }
+
+        // Automatically redirect to WhatsApp in a new tab, and trigger the email composer in the current tab
         setTimeout(() => {
           window.open(whatsappUrl, "_blank");
+          window.location.href = mailtoUrl;
         }, 1200);
       }, 300);
     });
@@ -1232,6 +1256,39 @@ ${notes ? `- *Special Notes:* ${notes}` : ""}`;
         updateBuilderCart();
       });
     }
+  }
+
+  // Newsletter Form interaction
+  const newsletterForm = document.getElementById("newsletterForm");
+  if (newsletterForm) {
+    newsletterForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const emailInput = newsletterForm.querySelector(".newsletter-input");
+      if (emailInput && emailInput.value) {
+        const btn = newsletterForm.querySelector(".newsletter-btn");
+        const btnRect = btn.getBoundingClientRect();
+        
+        // Burst of sparkles
+        for (let i = 0; i < 20; i++) {
+          createSparkle(btnRect.left + btnRect.width / 2, btnRect.top + btnRect.height / 2);
+        }
+        
+        // Show success alert or update placeholder beautifully
+        const originalPlaceholder = emailInput.placeholder;
+        emailInput.value = "";
+        emailInput.placeholder = "✨ Subscribed! Welcome to the realm! ✨";
+        emailInput.style.borderColor = "var(--mint-green)";
+        emailInput.style.boxShadow = "0 0 10px var(--mint-glow)";
+        emailInput.disabled = true;
+        
+        setTimeout(() => {
+          emailInput.placeholder = originalPlaceholder;
+          emailInput.style.borderColor = "";
+          emailInput.style.boxShadow = "";
+          emailInput.disabled = false;
+        }, 4000);
+      }
+    });
   }
 
   // =======================================
