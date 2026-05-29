@@ -1185,32 +1185,33 @@ document.addEventListener("DOMContentLoaded", () => {
       const time = document.getElementById("bookingTime")?.value || "";
       const notes = document.getElementById("bookingNotes")?.value || "";
 
-      // Format WhatsApp message
-      const text = `Hello The Beauty wizard salon, I would like to book an appointment:
-- *Name:* ${name}
-- *Phone:* ${phone}
-- *Service:* ${serviceText}
-- *Stylist:* ${stylistText}
-- *Date:* ${date}
-- *Time:* ${time}
-${notes ? `- *Special Notes:* ${notes}` : ""}`;
+      // 1. Silent Background API Dispatch
+      const bookingData = {
+        name,
+        phone,
+        service: serviceText,
+        stylist: stylistText,
+        date,
+        time,
+        notes
+      };
 
-      const whatsappUrl = `https://wa.me/917250794627?text=${encodeURIComponent(text)}`;
-
-      // Format Email message
-      const emailSubject = `New Appointment Booking - ${name}`;
-      const emailBody = `Hello The Beauty Wizard Salon,
-
-I would like to book an appointment with the following details:
-- Name: ${name}
-- Phone: ${phone}
-- Service: ${serviceText}
-- Stylist: ${stylistText}
-- Date: ${date}
-- Time: ${time}
-${notes ? `- Special Notes: ${notes}` : ""}`;
-
-      const mailtoUrl = `mailto:thebeautywizardsalom@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+      console.log("[Background Dispatch] Securely submitting booking details...");
+      
+      fetch('/api/book', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(bookingData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log("[Background Dispatch Success] Server response:", data);
+      })
+      .catch(err => {
+        console.error("[Background Dispatch Error]", err);
+      });
 
       // Trigger sparkle/glow explosion at the submit button location
       const submitBtn = document.getElementById("bookingSubmitBtn");
@@ -1225,22 +1226,9 @@ ${notes ? `- Special Notes: ${notes}` : ""}`;
       spawnExplosion(explosionX, explosionY);
       animateParticles();
 
-      // Transition to Success Overlay with fade-in delay
+      // 2. Immediate Success Overlay Transition (Zero pop-ups)
       setTimeout(() => {
         bookingSuccessOverlay.style.display = "flex";
-        
-        // Setup success overlay email link in case they want to resend
-        const successEmailBtn = document.getElementById("successEmailBtn");
-        if (successEmailBtn) {
-          successEmailBtn.setAttribute("href", mailtoUrl);
-          successEmailBtn.style.display = "inline-flex";
-        }
-
-        // Automatically redirect to WhatsApp in a new tab, and trigger the email composer in the current tab
-        setTimeout(() => {
-          window.open(whatsappUrl, "_blank");
-          window.location.href = mailtoUrl;
-        }, 1200);
       }, 300);
     });
 

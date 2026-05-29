@@ -1,15 +1,20 @@
-# Use lightweight Nginx alpine image as the base
-FROM nginx:alpine
+# Use official lightweight Node.js alpine image as the base
+FROM node:18-alpine
 
-# Copy the static web application files to Nginx's default html serving directory
-COPY index.html index.js index.css gallery.html /usr/share/nginx/html/
-COPY assets /usr/share/nginx/html/assets
+# Set the working directory inside the container
+WORKDIR /app
 
-# Copy our custom Nginx configuration which listens on port 8080
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copy package.json
+COPY package.json ./
 
-# Expose port 8080
+# Install only production dependencies
+RUN npm install --omit=dev
+
+# Copy the rest of the static application files and backend server
+COPY . .
+
+# Expose port 8080 (the default port for Google Cloud Run)
 EXPOSE 8080
 
-# Run Nginx in the foreground
-CMD ["nginx", "-g", "daemon off;"]
+# Start the background Node.js Express application
+CMD ["npm", "start"]
