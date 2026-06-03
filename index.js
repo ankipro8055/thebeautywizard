@@ -446,11 +446,19 @@ document.addEventListener("DOMContentLoaded", () => {
   // 3. HEADER SCROLL INTERACTION
   // =======================================
   const header = document.getElementById("mainHeader");
+  let isScrolling = false;
+  
   window.addEventListener("scroll", () => {
-    if (window.scrollY > 50) {
-      header.classList.add("scrolled");
-    } else {
-      header.classList.remove("scrolled");
+    if (!isScrolling) {
+      window.requestAnimationFrame(() => {
+        if (window.scrollY > 50) {
+          header.classList.add("scrolled");
+        } else {
+          header.classList.remove("scrolled");
+        }
+        isScrolling = false;
+      });
+      isScrolling = true;
     }
   });
 
@@ -1198,6 +1206,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       console.log("[Background Dispatch] Securely submitting booking details...");
       
+      // Dispatch to local backend API
       fetch('/api/book', {
         method: 'POST',
         headers: {
@@ -1212,6 +1221,57 @@ document.addEventListener("DOMContentLoaded", () => {
       .catch(err => {
         console.error("[Background Dispatch Error]", err);
       });
+
+      // Dispatch automated background email via FormSubmit
+      fetch('https://formsubmit.co/ajax/thebeautywizardsalon@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          _subject: `✨ New Salon Booking - ${name}`,
+          _captcha: "false",
+          Name: name,
+          Phone: phone,
+          Service: serviceText,
+          Stylist: stylistText,
+          Date: date,
+          Time: time,
+          Notes: notes || 'None'
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log("[FormSubmit Email Success] Dispatch completed:", data);
+      })
+      .catch(err => {
+        console.error("[FormSubmit Email Error] Dispatch failed:", err);
+      });
+
+      // 2. Synchronous WhatsApp Dispatch to bypass browser popup blockers
+      const whatsappMessage = `✨ *New Appointment Booking* ✨\n\n` +
+        `👤 *Name:* ${name}\n` +
+        `📞 *Phone:* ${phone}\n` +
+        `💆 *Service:* ${serviceText}\n` +
+        `💇 *Stylist:* ${stylistText}\n` +
+        `📅 *Date:* ${date}\n` +
+        `⏰ *Time:* ${time}\n` +
+        `📝 *Notes:* ${notes || 'None'}`;
+      
+      const whatsappUrl = `https://api.whatsapp.com/send?phone=917644005816&text=${encodeURIComponent(whatsappMessage)}`;
+      
+      try {
+        window.open(whatsappUrl, '_blank');
+      } catch (err) {
+        console.error("[WhatsApp Window Open Error]", err);
+      }
+
+      // Update the WhatsApp button href in the success overlay
+      const successWhatsAppBtn = document.getElementById("successWhatsAppBtn");
+      if (successWhatsAppBtn) {
+        successWhatsAppBtn.setAttribute("href", whatsappUrl);
+      }
 
       // Trigger sparkle/glow explosion at the submit button location
       const submitBtn = document.getElementById("bookingSubmitBtn");

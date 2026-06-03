@@ -103,7 +103,7 @@ app.post('/api/book', async (req, res) => {
         const twilioSid = process.env.TWILIO_ACCOUNT_SID;
         const twilioToken = process.env.TWILIO_AUTH_TOKEN;
         const twilioFrom = process.env.TWILIO_FROM_NUMBER;
-        const targetMobile = process.env.RECEIVER_MOBILE || '+917250794627'; // Default target phone
+        const targetMobile = process.env.RECEIVER_MOBILE || '+917644005816'; // Default target phone
 
         if (twilioSid && twilioToken && twilioFrom) {
             try {
